@@ -1,0 +1,23 @@
+{
+  "extends": ["airbnb-base", "prettier"],
+  "plugins": ["prettier"],
+  "parserOptions": {
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true,
+      "modules": true
+    }
+  },
+  "rules": {
+    "no-restricted-syntax": ["off", "ForOfStatement"],
+    "no-unused-vars": ["error", { "args": "none" }],
+    "prettier/prettier": ["error"],
+    "import/extensions": [
+      "error",
+      {
+        "mjs": "always",
+        "js": "always"
+      }
+   ]
+  }
+}
