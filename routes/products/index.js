@@ -7,7 +7,7 @@ import {
 
 /**
  * @param {import('fastify').FastifyInstance} fastify
- * @param {*} opts
+ * @param {*} _opts
  */
 export default async (fastify, _opts) => {
   /** @type {import('mongoose').Model} */
@@ -15,7 +15,7 @@ export default async (fastify, _opts) => {
 
   /**
    * @param {import('fastify').FastifyRequest} request
-   * @param {import('fastify').FastifyReply} reply
+   * @param {import('fastify').FastifyReply} _reply
    */
   fastify.get('/', getSchema, async (request, _reply) => {
     let filter = { deletedAt: null };
@@ -27,7 +27,7 @@ export default async (fastify, _opts) => {
 
     fastify.log.debug('filter = %o', filter);
 
-    /** @type {Tbks}  */
+    /** @type {import('../../model/schema/product').Product[]} */
     const products = await Product.paginate(filter, {
       limit,
       page,
@@ -41,6 +41,7 @@ export default async (fastify, _opts) => {
    * @param {import('fastify').FastifyReply} reply
    */
   fastify.get('/:id', findByIdSchema, async (request, reply) => {
+    /** @type {import('../../model/schema/product').Product} */
     const product = await Product.findById(request.params.id);
     if (product === null) {
       reply.code(404);
@@ -61,13 +62,12 @@ export default async (fastify, _opts) => {
    * @param {import('fastify').FastifyRequest} request
    * @param {import('fastify').FastifyReply} reply
    */
-  fastify.put('/:id', putSchema, async (request, _reply) => {
+  fastify.put('/:id', putSchema, async (request, reply) => {
     fastify.log.info('Replacing %o', request.body);
-
+    reply.code(201);
     return Product.findOneAndUpdate(
       {
         _id: request.params.id
-        // , deletedAt: null
       },
       request.body,
       { new: true }
@@ -79,9 +79,8 @@ export default async (fastify, _opts) => {
    * @param {import('fastify').FastifyReply} reply
    */
   fastify.post('/', postSchema, async (request, reply) => {
-    reply.code(201);
     fastify.log.info('Creating %o', request.body);
-
+    reply.code(201);
     const product = new Product(request.body);
     return product.save();
   });

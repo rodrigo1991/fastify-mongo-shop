@@ -1,8 +1,6 @@
 import mongoose from 'mongoose';
 import fp from 'fastify-plugin';
 import product from '../model/product.js';
-import user from '../model/user.js';
-import order from '../model/order.js';
 
 /**
  * @param {import('fastify').FastifyInstance} fastify
@@ -17,9 +15,7 @@ export default fp(async (fastify, opts) => {
   });
 
   const models = {
-    Product: product(mongoose),
-    User: user(mongoose),
-    Order: order(mongoose)
+    Product: product(mongoose)
   };
 
   fastify.decorate('models', () => models);
