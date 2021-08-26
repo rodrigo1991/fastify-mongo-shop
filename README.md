@@ -22,7 +22,15 @@ To install the dependencies you need to execute the following command
 npm i
 ```
 
-### 2. Execute project
+### 2. .env
+
+Create a .env file on the root folder with the following value
+
+```
+MONGODB_URI=mongodb://shop:password@localhost:27017/shop
+```
+
+### 3. Execute project
 
 ```bash
 npm run dev
